@@ -27,7 +27,7 @@ const run = async () => {
 
 		core.info("Received lambda function information.");
 		const new_layer_list = [];
-		lambda_function_data.Configuration.Layers.forEach((layer, index, arr) => {
+		await lambda_function_data.Configuration.Layers.forEach(async (layer, index, arr) => {
 			const lambda_layer_data = await lambda.listLayerVersions({
 				LayerName: layer.Arn
 			}).promise();
@@ -35,7 +35,7 @@ const run = async () => {
 
 			const target_layer = lambda_layer_data.LayerVersions.sort((a, b) => b.Version - a.Version)[0];
 			new_layer_list.push(target_layer.LayerVersionArn);
-		});
+		}).promise();
 
 		core.info("Updating function layers");
 		const update_lambda_config = await lambda.updateFunctionConfiguration({
