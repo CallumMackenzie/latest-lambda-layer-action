@@ -29205,15 +29205,17 @@ const run = async () => {
 
 		core.info("Received lambda function information.");
 		const new_layer_list = [];
-		await lambda_function_data.Layers.forEach(async (layer, index, arr) => {
+		let index = 0;
+		for (let layer in lambda_function_data.Layers) {
 			const lambda_layer_data = await lambda.listLayerVersions({
 				LayerName: layer.Arn.substring(0, layer.Arn.lastIndexOf(":"))
 			}).promise();
-			core.info("Recieved lambda versions for layer (" + index + "/" + arr.length + ")");
+			core.info("Recieved lambda versions for layer (" + (++index) + "/" +
+				lambda_function_data.Layers.length + ")");
 
 			const target_layer = lambda_layer_data.LayerVersions.sort((a, b) => b.Version - a.Version)[0];
 			new_layer_list.push(target_layer.LayerVersionArn);
-		}).promise();
+		}
 
 		core.info("Updating function layers");
 		const update_lambda_config = await lambda.updateFunctionConfiguration({
