@@ -26,21 +26,21 @@ const run = async () => {
 		}).promise();
 
 		core.info("Received lambda function information");
-		if (lambda_function_data.Layers == null
-			|| lambda_function_data.Layers == undefined
-			|| lambda_function_data.Layers.length == 0) {
+
+		const layers = lambda_function_data.Layers;
+		if (layers == null
+			|| layers == undefined
+			|| layers.length == 0) {
 			core.info("No layers present for function");
 		}
 		core.info("Updating " + lambda_function_data.Layers.length + " for function");
 		const new_layer_list = [];
-		let index = 0;
-		for (let layer in lambda_function_data.Layers) {
-			core.info("LAYER: " + layer);
+		for (let i = 0; i < layers.length; ++i) {
+			const layer = lambda_function_data.Layers[i];
 			const lambda_layer_data = await lambda.listLayerVersions({
 				LayerName: layer.Arn.substring(0, layer.Arn.lastIndexOf(":"))
 			}).promise();
-			core.info("Recieved lambda versions for layer (" + (++index) + "/" +
-				lambda_function_data.Layers.length + ")");
+			core.info("Recieved lambda versions for layer (" + (i + 1) + "/" + layers.length + ")");
 
 			const target_layer = lambda_layer_data.LayerVersions.sort((a, b) => b.Version - a.Version)[0];
 			new_layer_list.push(target_layer.LayerVersionArn);
