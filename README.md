@@ -17,8 +17,8 @@ jobs:
   update_lambda_layers:
   	name: Update lambda layer versions
     runs-on: ubuntu-latest
-	steps:
-	  - name: Update layers
+    steps:
+      - name: Update layers
         uses: callummackenzie/latest-lambda-layer-action@v1
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
