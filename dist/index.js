@@ -29203,10 +29203,17 @@ const run = async () => {
 			FunctionName: lambda_function_name,
 		}).promise();
 
-		core.info("Received lambda function information.");
+		core.info("Received lambda function information");
+		if (lambda_function_data.Layers == null
+			|| lambda_function_data.Layers == undefined
+			|| lambda_function_data.Layers.length == 0) {
+			core.info("No layers present for function");
+		}
+		core.info("Updating " + lambda_function_data.Layers.length + " for function");
 		const new_layer_list = [];
 		let index = 0;
 		for (let layer in lambda_function_data.Layers) {
+			core.info("LAYER: " + layer);
 			const lambda_layer_data = await lambda.listLayerVersions({
 				LayerName: layer.Arn.substring(0, layer.Arn.lastIndexOf(":"))
 			}).promise();
@@ -29217,7 +29224,7 @@ const run = async () => {
 			new_layer_list.push(target_layer.LayerVersionArn);
 		}
 
-		core.info("Updating function layers");
+		core.info("Updating function layer versions");
 		const update_lambda_config = await lambda.updateFunctionConfiguration({
 			FunctionName: lambda_function_name,
 			Layers: new_layer_list
