@@ -29207,7 +29207,7 @@ const run = async () => {
 		const new_layer_list = [];
 		await lambda_function_data.Layers.forEach(async (layer, index, arr) => {
 			const lambda_layer_data = await lambda.listLayerVersions({
-				LayerName: layer.Arn
+				LayerName: layer.Arn.substring(0, layer.Arn.lastIndexOf(":"))
 			}).promise();
 			core.info("Recieved lambda versions for layer (" + index + "/" + arr.length + ")");
 
