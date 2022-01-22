@@ -22,7 +22,7 @@ const run = async () => {
 
 
 		const lambda_function_data = await lambda.getFunctionConfiguration({
-			FunctionName: "arn:aws:lambda:" + lambda_config.region + ":function:" + lambda_function_name,
+			FunctionName: lambda_function_name,
 		}).promise();
 
 		core.info("Received lambda function information.");
