@@ -42,6 +42,6 @@ jobs:
 
 ## AWS Permissions Policy
 The AWS IAM user this action uses must have permissions to:
-- **lambda:GetFunction** for the desired lambda(s)
+- **lambda:GetFunctionConfiguration** for the desired lambda(s)
 - **lambda:ListLayerVersions** for the desired layer(s)
 - **lambda:UpdateFunctionConfiguration** for the desired lambda(s)

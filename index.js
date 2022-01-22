@@ -21,13 +21,13 @@ const run = async () => {
 		core.info("Getting lambda layers for function");
 
 
-		const lambda_function_data = await lambda.getFunction({
+		const lambda_function_data = await lambda.getFunctionConfiguration({
 			FunctionName: lambda_function_name
 		}).promise();
 
 		core.info("Received lambda function information.");
 		const new_layer_list = [];
-		await lambda_function_data.Configuration.Layers.forEach(async (layer, index, arr) => {
+		await lambda_function_data.Layers.forEach(async (layer, index, arr) => {
 			const lambda_layer_data = await lambda.listLayerVersions({
 				LayerName: layer.Arn
 			}).promise();
