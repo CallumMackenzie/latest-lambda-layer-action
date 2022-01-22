@@ -1,4 +1,4 @@
-name: 'Update Lambda Layers'
+name: 'Update to Latest Lambda Layers'
 description: 'Update the AWS lambda layers for a given function to their latest versions'
 inputs:
   function_name:
